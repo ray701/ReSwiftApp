@@ -1,0 +1,133 @@
+name: ReSwiftApp
+options:
+  xcodeVersion: "13.0"
+  deploymentTarget:
+    iOS: "13.0"
+  developmentLanguage: ja
+  usesTabs: false
+  groupSortPosition: top
+packages:
+  ReSwift:
+    url: https://github.com/ReSwift/ReSwift.git
+    version: 6.1.0
+  Rswift:
+    url: https://github.com/mac-cain13/R.swift.Library.git
+    version: 5.3.0
+  RxSwift:
+    url: https://github.com/ReactiveX/RxSwift.git
+    version: 6.2.0
+
+targets:
+  ReSwiftApp:
+    type: application
+    platform: iOS
+    sources:
+      - ReSwiftApp
+      - path: ReSwiftApp/Resource/R.generated.swift
+        group: ReSwiftApp/Resource
+        optional: true
+        type: file
+    dependencies:
+      - package: Rswift
+      - package: ReSwift
+      - package: RxSwift
+    preBuildScripts:
+      - path: /bin/sh
+        name: R.swift
+        inputFiles:
+          - $TEMP_DIR/rswift-lastrun
+        outputFiles:
+          - $SRCROOT/${PRODUCT_NAME}/Resource/R.generated.swift
+        script: |
+          ## begin
+          if [ `uname -m` == 'arm64' ] && [ -d /opt/homebrew/bin/ ]; then
+            export PATH=/opt/homebrew/bin:$PATH
+          fi
+          ## end
+          mint run R.swift rswift generate "$SRCROOT/${PRODUCT_NAME}/Resource/R.generated.swift"
+      - path: /bin/sh
+        name: Lisence Plist
+        script: |
+          if [[ ! -z "$GITHUB_ACCESS_TOKEN" ]]; then
+            GITHUB_TOKEN_OPTION="--github-token $GITHUB_ACCESS_TOKEN"
+          fi
+          mint run LicensePlist --suppress-opening-directory --fail-if-missing-license --output-path ${PRODUCT_NAME}/Resource/Settings.bundle $GITHUB_TOKEN_OPTION
+        outputFiles:
+          - ${SRCROOT}/${PRODUCT_NAME}/Resource/Settings.bundle
+    settings:
+      base:
+        SWIFT_VERSION: 5.0
+        CURRENT_PROJECT_VERSION: 1
+        PRODUCT_NAME: $(TARGET_NAME)
+        INFOPLIST_FILE: ReSwiftApp/Info.plist
+        DEVELOPMENT_LANGUAGE: jp
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
+        EXCLUDED_ARCHS[sdk=iphonesimulator*]: "arm64"
+        TARGETED_DEVICE_FAMILY: 1
+        PRODUCT_BUNDLE_IDENTIFIER: com.ReSwiftApp
+  ReSwiftAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ReSwiftAppTests
+      - path: ReSwiftAppTests/Resources/FeatureGenerateMocks.swift
+        createIntermediateGroups: true
+        optional: true
+      - path: ReSwiftAppTests/Resources/DomainGenerateMocks.swift
+        createIntermediateGroups: true
+        optional: true
+      - path: ReSwiftAppTests/Resources/DataGenerateMocks.swift
+        createIntermediateGroups: true
+        optional: true
+    preBuildScripts:
+      - path: /bin/sh
+        name: Cuckoo
+        inputFiles:
+          - $TEMP_DIR/cuckoo-lastrun
+        outputFiles:
+          - $SRCROOT/$TARGET_NAME/Resources/FeatureGenerateMocks.swift
+          - $SRCROOT/$TARGET_NAME/Resources/DomainGenerateMocks.swift
+          - $SRCROOT/$TARGET_NAME/Resources/DataGenerateMocks.swift
+        script: |
+          "${PODS_ROOT}/Cuckoo/run" generate \
+          --output $SRCROOT/$TARGET_NAME/Resources/FeatureGenerateMocks.swift \
+          --testable $PROJECT_NAME \
+          --no-class-mocking \
+          --glob \
+          $SRCROOT/$PROJECT_NAME/Features/**/*.swift \
+
+          "${PODS_ROOT}/Cuckoo/run" generate \
+          --output $SRCROOT/$TARGET_NAME/Resources/DomainGenerateMocks.swift \
+          --testable $PROJECT_NAME \
+          --no-class-mocking \
+          --exclude TimelineModel,TimelineToken \
+          --glob \
+          $SRCROOT/$PROJECT_NAME/Domain/**/*.swift \
+
+          "${PODS_ROOT}/Cuckoo/run" generate \
+          --output $SRCROOT/$TARGET_NAME/Resources/DataGenerateMocks.swift \
+          --testable $PROJECT_NAME \
+          --no-class-mocking \
+          --exclude ApiTargetType \
+          --glob \
+          $SRCROOT/$PROJECT_NAME/Data/**/*.swift \
+
+          touch $TEMP_DIR/cuckoo-lastrun
+    settings:
+      ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
+      CODE_SIGN_STYLE: Automatic
+      PRODUCT_NAME: $(TARGET_NAME)
+    dependencies:
+      - target: ReSwiftApp
+schemes:
+  ReSwiftApp:
+    build:
+      targets:
+        ReSwiftApp: all
+        ReSwiftAppTests: [test]
+    test:
+      config: Debug
+      targets: [ReSwiftAppTests]
+      gatherCoverageData: true
+      coverageTargets: [ReSwiftApp]
+

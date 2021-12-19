@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ReSwiftApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dah-eO-xum">
+                                <rect key="frame" x="207" y="448" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="oI8-ph-8qK">
+                                <rect key="frame" x="50" y="498" width="314" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZE1-MT-aNI" userLabel="down">
+                                        <rect key="frame" x="0.0" y="0.0" width="157" height="50"/>
+                                        <state key="normal" title="down"/>
+                                        <connections>
+                                            <action selector="downButtonDidTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="znx-Hr-8Tr"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsy-TZ-hlZ" userLabel="up">
+                                        <rect key="frame" x="157" y="0.0" width="157" height="50"/>
+                                        <state key="normal" title="up"/>
+                                        <connections>
+                                            <action selector="upButtonDidTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fnX-3E-4TV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="it2-S3-40k"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5a-dI-xNh">
+                                <rect key="frame" x="191.5" y="648" width="31" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="pRe-IY-Ibe"/>
+                                </constraints>
+                                <state key="normal" title="次へ"/>
+                                <connections>
+                                    <action selector="nextButtonDidTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ydg-Bc-8sB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="oI8-ph-8qK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="Isr-67-pZi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="oI8-ph-8qK" secondAttribute="trailing" constant="50" id="LQt-aV-T2n"/>
+                            <constraint firstItem="dah-eO-xum" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Mf4-Ai-06Z"/>
+                            <constraint firstItem="oI8-ph-8qK" firstAttribute="top" secondItem="dah-eO-xum" secondAttribute="bottom" constant="50" id="Qwa-EC-aEh"/>
+                            <constraint firstItem="dah-eO-xum" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Y6X-G6-5yJ"/>
+                            <constraint firstItem="S5a-dI-xNh" firstAttribute="top" secondItem="oI8-ph-8qK" secondAttribute="bottom" constant="100" id="jS8-1f-Q9P"/>
+                            <constraint firstItem="S5a-dI-xNh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vOf-FK-Imh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="countLabel" destination="dah-eO-xum" id="1b5-Vu-wXM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-284" y="119"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
